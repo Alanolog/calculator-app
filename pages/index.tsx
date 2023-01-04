@@ -1,6 +1,33 @@
 import Head from "next/head";
+import React from "react";
+
+interface DotProps {
+  grayBg?: boolean;
+  orangeBg?: boolean;
+  content: String;
+}
+
+const Dot: React.FC<DotProps> = ({ content, grayBg, orangeBg }) => {
+  return (
+    <div
+      className={` rounded-full cursor-pointer flex justify-center items-center text-center w-14 h-14 text-2xl bg-gray-700 text-gray-100 hover:text-gray-200 hover:bg-gray-800 transition-all font-semibold ${
+        grayBg
+          ? "bg-gray-300 text-black hover:text-gray-900 hover:bg-gray-500"
+          : ""
+      } ${
+        orangeBg
+          ? " bg-orange-500 text-white hover:text-gray-50 hover:bg-orange-700"
+          : ""
+      }`}
+    >
+      {content}
+    </div>
+  );
+};
 
 export default function Home() {
+  const [value, setValue] = React.useState(0);
+
   return (
     <>
       <Head>
@@ -9,10 +36,35 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className="w-96 mx-auto h-16 bg-gray-900 text-gray-200  flex items-center justify-center text-center border-b-orange-300 border-b-2 border-solid">
-        Calculator Maded by Alan Rutyna
+      <header className=" w-80 mx-auto h-16 bg-black text-gray-200  flex items-center justify-center text-center border-b-orange-300 border-b-2 border-solid rounded-t-xl">
+        Calculator Made by Alan Rutyna
       </header>
-      <main className=" mx-auto bg-gray-900 h-96 w-96"></main>
+      <main className=" mx-auto bg-black h-96 w-80 p-4 rounded-b-xl">
+        <div className=" text-white text-right">{value}</div>
+        <div className=" w-full grid grid-cols-4 py-4 gap-1">
+          <Dot content="C" grayBg />
+          <Dot content="±" grayBg />
+          <Dot content="%" grayBg />
+          <Dot content="/" orangeBg />
+          <Dot content="7" />
+          <Dot content="8" />
+          <Dot content="9" />
+          <Dot content="x" orangeBg />
+          <Dot content="4" />
+          <Dot content="5" />
+          <Dot content="6" />
+          <Dot content="-" orangeBg />
+          <Dot content="1" />
+          <Dot content="2" />
+          <Dot content="3" />
+          <Dot content="+" orangeBg />
+          <div className="rounded-full flex cursor-pointer items-center w-32 h-14 text-2xl bg-gray-700 text-gray-100 col-span-2 px-6 font-semibold transition-all hover:bg-gray-800 hover:text-gray-200">
+            0
+          </div>
+          <Dot content="." />
+          <Dot content="=" orangeBg />
+        </div>
+      </main>
     </>
   );
 }
