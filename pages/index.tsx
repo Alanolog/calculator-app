@@ -4,12 +4,14 @@ import React from "react";
 interface DotProps {
   grayBg?: boolean;
   orangeBg?: boolean;
-  content: String;
+  content: string;
+  onClick: (content: string) => void;
 }
 
-const Dot: React.FC<DotProps> = ({ content, grayBg, orangeBg }) => {
+const Dot: React.FC<DotProps> = ({ content, grayBg, orangeBg, onClick }) => {
   return (
     <div
+      onClick={() => onClick(content)}
       className={` rounded-full cursor-pointer flex justify-center items-center text-center w-14 h-14 text-2xl bg-gray-700 text-gray-100 hover:text-gray-200 hover:bg-gray-800 transition-all font-semibold ${
         grayBg
           ? "bg-gray-300 text-black hover:text-gray-900 hover:bg-gray-500"
@@ -26,7 +28,90 @@ const Dot: React.FC<DotProps> = ({ content, grayBg, orangeBg }) => {
 };
 
 export default function Home() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState("0");
+  const [lastValue, setLastValue] = React.useState("");
+  const [operationType, setOperationType] = React.useState("");
+
+  const calculateCurrentData = () => {
+    if (!operationType.length) {
+      setValue(value);
+    } else if (operationType === "+") {
+      setValue(String(+lastValue + +value));
+    } else if (operationType === "-") {
+      setValue(String(+lastValue - +value));
+    } else if (operationType === "x") {
+      setValue(String(+lastValue * +value));
+    } else if (operationType === "/") {
+      setValue(String((+lastValue / +value).toFixed(2)));
+    }
+    setLastValue(value);
+    setValue("0");
+    setOperationType("");
+  };
+
+  const handleClick = (content: string) => {
+    const number = parseFloat(value);
+
+    switch (content) {
+      case "C":
+        setValue("0");
+        setLastValue("");
+        setOperationType("");
+        break;
+      case "±":
+        setValue(String(number * -1));
+        setLastValue("");
+        setOperationType("");
+        break;
+      case "%":
+        setValue(String(number / 100));
+        setLastValue("");
+        setOperationType("");
+        break;
+      case "+":
+        calculateCurrentData();
+        setOperationType("+");
+        break;
+      case "-":
+        calculateCurrentData();
+        setOperationType("-");
+        break;
+      case "x":
+        calculateCurrentData();
+        setOperationType("x");
+        break;
+      case "/":
+        calculateCurrentData();
+        setOperationType("/");
+        break;
+      case "=":
+        if (!operationType.length) {
+          setValue(value);
+        } else if (operationType === "+") {
+          setValue(String(+lastValue + +value));
+        } else if (operationType === "-") {
+          setValue(String(+lastValue - +value));
+        } else if (operationType === "x") {
+          setValue(String(+lastValue * +value));
+        } else if (operationType === "/") {
+          setValue(String((+lastValue / +value).toFixed(2)));
+        }
+        setLastValue("");
+        setOperationType("");
+
+        break;
+
+      default:
+        if (value.includes(".") && content === ".") {
+          break;
+        }
+        if (number === 0) {
+          setValue(content);
+        } else {
+          setValue(String(value + content));
+        }
+    }
+  };
 
   return (
     <>
@@ -39,30 +124,38 @@ export default function Home() {
       <header className=" w-80 mx-auto h-16 bg-black text-gray-200  flex items-center justify-center text-center border-b-orange-300 border-b-2 border-solid rounded-t-xl">
         Calculator Made by Alan Rutyna
       </header>
-      <main className=" mx-auto bg-black h-96 w-80 p-4 rounded-b-xl">
-        <div className=" text-white text-right">{value}</div>
+      <main className=" mx-auto bg-black h-auto w-80 p-4 rounded-b-xl">
+        <div
+          className=" text-white text-right text-4xl "
+          style={{ direction: "rtl" }}
+        >
+          {value}
+        </div>
         <div className=" w-full grid grid-cols-4 py-4 gap-1">
-          <Dot content="C" grayBg />
-          <Dot content="±" grayBg />
-          <Dot content="%" grayBg />
-          <Dot content="/" orangeBg />
-          <Dot content="7" />
-          <Dot content="8" />
-          <Dot content="9" />
-          <Dot content="x" orangeBg />
-          <Dot content="4" />
-          <Dot content="5" />
-          <Dot content="6" />
-          <Dot content="-" orangeBg />
-          <Dot content="1" />
-          <Dot content="2" />
-          <Dot content="3" />
-          <Dot content="+" orangeBg />
-          <div className="rounded-full flex cursor-pointer items-center w-32 h-14 text-2xl bg-gray-700 text-gray-100 col-span-2 px-6 font-semibold transition-all hover:bg-gray-800 hover:text-gray-200">
+          <Dot onClick={handleClick} content="C" grayBg />
+          <Dot onClick={handleClick} content="±" grayBg />
+          <Dot onClick={handleClick} content="%" grayBg />
+          <Dot onClick={handleClick} content="/" orangeBg />
+          <Dot onClick={handleClick} content="7" />
+          <Dot onClick={handleClick} content="8" />
+          <Dot onClick={handleClick} content="9" />
+          <Dot onClick={handleClick} content="x" orangeBg />
+          <Dot onClick={handleClick} content="4" />
+          <Dot onClick={handleClick} content="5" />
+          <Dot onClick={handleClick} content="6" />
+          <Dot onClick={handleClick} content="-" orangeBg />
+          <Dot onClick={handleClick} content="1" />
+          <Dot onClick={handleClick} content="2" />
+          <Dot onClick={handleClick} content="3" />
+          <Dot onClick={handleClick} content="+" orangeBg />
+          <div
+            onClick={() => handleClick("0")}
+            className="rounded-full flex cursor-pointer items-center w-32 h-14 text-2xl bg-gray-700 text-gray-100 col-span-2 px-6 font-semibold transition-all hover:bg-gray-800 hover:text-gray-200"
+          >
             0
           </div>
-          <Dot content="." />
-          <Dot content="=" orangeBg />
+          <Dot onClick={handleClick} content="." />
+          <Dot onClick={handleClick} content="=" orangeBg />
         </div>
       </main>
     </>
