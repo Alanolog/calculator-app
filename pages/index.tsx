@@ -31,6 +31,8 @@ export default function Home() {
   const [value, setValue] = React.useState("0");
   const [lastValue, setLastValue] = React.useState("");
   const [operationType, setOperationType] = React.useState("");
+  const [time, setTime] = React.useState("");
+  const [valueSeconds, setValueSeconds] = React.useState("0");
 
   const calculateCurrentData = () => {
     if (!operationType.length) {
@@ -121,43 +123,71 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className=" w-80 mx-auto h-16 bg-black text-gray-200  flex items-center justify-center text-center border-b-orange-300 border-b-2 border-solid rounded-t-xl">
-        Calculator Made by Alan Rutyna
-      </header>
-      <main className=" mx-auto bg-black h-auto w-80 p-4 rounded-b-xl">
-        <div
-          className=" text-white text-right text-4xl "
-          style={{ direction: "rtl" }}
-        >
-          {value}
-        </div>
-        <div className=" w-full grid grid-cols-4 py-4 gap-1">
-          <Dot onClick={handleClick} content="C" grayBg />
-          <Dot onClick={handleClick} content="±" grayBg />
-          <Dot onClick={handleClick} content="%" grayBg />
-          <Dot onClick={handleClick} content="/" orangeBg />
-          <Dot onClick={handleClick} content="7" />
-          <Dot onClick={handleClick} content="8" />
-          <Dot onClick={handleClick} content="9" />
-          <Dot onClick={handleClick} content="x" orangeBg />
-          <Dot onClick={handleClick} content="4" />
-          <Dot onClick={handleClick} content="5" />
-          <Dot onClick={handleClick} content="6" />
-          <Dot onClick={handleClick} content="-" orangeBg />
-          <Dot onClick={handleClick} content="1" />
-          <Dot onClick={handleClick} content="2" />
-          <Dot onClick={handleClick} content="3" />
-          <Dot onClick={handleClick} content="+" orangeBg />
+      <article className=" mb-10 w-[600px] max-w-[90vw] mx-auto">
+        <header className=" w-full mx-auto h-16 bg-black text-gray-200  flex items-center justify-center text-center border-b-orange-300 border-b-2 border-solid rounded-t-xl">
+          Kalkulator daty
+        </header>
+        <main className=" mx-auto bg-black h-auto w-full p-4 rounded-b-xl flex justify-center items-center flex-col gap-10">
+          {" "}
+          <p className="text-white text-right text-2xl">
+            wybrana data pojawi się na dole w sekundach
+          </p>
+          <input
+            type="date"
+            value={time}
+            lang="pl-PL"
+            onChange={(e) => {
+              setTime(e.target.value);
+              setValueSeconds(`${new Date(e.target.value).getTime() / 1000}`);
+            }}
+          />
           <div
-            onClick={() => handleClick("0")}
-            className="rounded-full flex cursor-pointer items-center w-32 h-14 text-2xl bg-gray-700 text-gray-100 col-span-2 px-6 font-semibold transition-all hover:bg-gray-800 hover:text-gray-200"
+            className=" text-white text-right text-4xl "
+            style={{ direction: "rtl" }}
           >
-            0
+            Sekundy: {valueSeconds}
           </div>
-          <Dot onClick={handleClick} content="." />
-          <Dot onClick={handleClick} content="=" orangeBg />
-        </div>
-      </main>
+        </main>
+      </article>
+      {/* <article>
+        <header className=" w-80 mx-auto h-16 bg-black text-gray-200  flex items-center justify-center text-center border-b-orange-300 border-b-2 border-solid rounded-t-xl">
+          Calculator Made by Alan Rutyna
+        </header>
+        <main className=" mx-auto bg-black h-auto w-80 p-4 rounded-b-xl">
+          <div
+            className=" text-white text-right text-4xl "
+            style={{ direction: "rtl" }}
+          >
+            {value}
+          </div>
+          <div className=" w-full grid grid-cols-4 py-4 gap-1">
+            <Dot onClick={handleClick} content="C" grayBg />
+            <Dot onClick={handleClick} content="±" grayBg />
+            <Dot onClick={handleClick} content="%" grayBg />
+            <Dot onClick={handleClick} content="/" orangeBg />
+            <Dot onClick={handleClick} content="7" />
+            <Dot onClick={handleClick} content="8" />
+            <Dot onClick={handleClick} content="9" />
+            <Dot onClick={handleClick} content="x" orangeBg />
+            <Dot onClick={handleClick} content="4" />
+            <Dot onClick={handleClick} content="5" />
+            <Dot onClick={handleClick} content="6" />
+            <Dot onClick={handleClick} content="-" orangeBg />
+            <Dot onClick={handleClick} content="1" />
+            <Dot onClick={handleClick} content="2" />
+            <Dot onClick={handleClick} content="3" />
+            <Dot onClick={handleClick} content="+" orangeBg />
+            <div
+              onClick={() => handleClick("0")}
+              className="rounded-full flex cursor-pointer items-center w-32 h-14 text-2xl bg-gray-700 text-gray-100 col-span-2 px-6 font-semibold transition-all hover:bg-gray-800 hover:text-gray-200"
+            >
+              0
+            </div>
+            <Dot onClick={handleClick} content="." />
+            <Dot onClick={handleClick} content="=" orangeBg />
+          </div>
+        </main>
+      </article> */}
     </>
   );
 }
